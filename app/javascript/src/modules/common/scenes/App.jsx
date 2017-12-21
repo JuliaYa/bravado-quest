@@ -6,6 +6,8 @@ import { connect } from 'react-redux'
 import * as commonActions from '../../common/actions/commonActions'
 import '../../../resources/assets/scss/main.scss'
 
+import SearchBar from '../../../components/SearchBar/SearchBar.jsx'
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -15,7 +17,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <h2>Test!</h2>
+        <SearchBar/>     
         {this.props.children}
       </div>
     )
