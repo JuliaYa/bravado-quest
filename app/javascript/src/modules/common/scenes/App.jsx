@@ -7,6 +7,7 @@ import * as commonActions from '../../common/actions/commonActions'
 import '../../../resources/assets/scss/main.scss'
 
 import SearchBar from '../../../components/SearchBar/SearchBar.jsx'
+import CardsList from '../../../components/CardsList/CardsList.jsx'
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,8 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <SearchBar/>     
+        <SearchBar/>
+        <CardsList/>
         {this.props.children}
       </div>
     )

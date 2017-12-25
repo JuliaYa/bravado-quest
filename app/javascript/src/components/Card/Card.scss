@@ -1,2 +1,18 @@
 /* Card Component */
-.card{}
+.card{
+  background-color: #FAFAFA;
+  border-radius: 2px;
+  margin-top: 20px;
+
+  .avatar{
+    display: inline-block;
+
+    img {
+      width: 125px;
+      height: 125px;
+    }
+  }
+  .info{
+    display: inline-block;
+  }
+}
