@@ -4,6 +4,7 @@
     "axios": "^0.17.1",
     "babel-preset-react": "^6.24.1",
     "coffeescript": "1.12.7",
+    "js-search": "^1.4.2",
     "mirror-creator": "^1.1.0",
     "node-sass": "^4.7.2",
     "prop-types": "^15.6.0",
