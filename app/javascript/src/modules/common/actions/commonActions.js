@@ -30,3 +30,10 @@ export function loadCardsFailure(error) {
     payload: error
   }
 }
+
+export function setFilter(filter){
+  return {
+    type: commonTypes.SET_FILTER,
+    payload: filter
+  }
+}

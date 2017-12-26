@@ -6,7 +6,8 @@ import CardsList from './CardsList'
 
 const mapStateToProps = (state) => {
   return {
-    cards: state.common.cards
+    cards: state.common.cards,
+    filter: state.common.filter
   }
 }
 
