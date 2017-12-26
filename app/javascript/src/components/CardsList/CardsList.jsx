@@ -21,8 +21,6 @@ class CardsList extends Component {
   render(){
     const { cards, error } = this.props
 
-    console.log(this.props)
-
     var displayed_cards = [];
 
     if(error){
