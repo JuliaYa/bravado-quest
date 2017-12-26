@@ -1,6 +1,6 @@
 import { combineReducers} from 'redux'
 
-import { commonReducer} from './modules/common/commonReducer'
+import { commonReducer} from './modules/common/reducers/commonReducer'
 
 const rootReducer = combineReducers({
   common: commonReducer

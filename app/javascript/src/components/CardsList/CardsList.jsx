@@ -8,36 +8,50 @@ import Card from '../Card/Card.jsx'
 class CardsList extends Component {
   constructor(props){
     super(props);
-    this.state = {};
-    this.state.cards = [
-           {"name":"Ms. Alfonzo Stoltenberg",
-            "email":"keven@grady.net",
-            "title":"Direct Implementation Producer",
-            "city":"Norvalville",
-            "address":"9138 Stiedemann Ports",
-            "avatar":"https://robohash.org/possimusdoloresid.png?size=300x300\u0026set=set1"
-          },
-          {"name":"Lelia Willms",
-          "email":"clementina_ryan@dooley.com",
-          "title":"Internal Security Assistant",
-          "city":"Melisaton",
-          "address":"166 Waters Falls",
-          "avatar":"https://robohash.org/perferendissapienteodit.png?size=300x300\u0026set=set1"}
-    ]
   }
+
+  componentDidMount(){
+    this.props.loadCards();
+  }
+
+  componentWillReceiveProps(newProps){
+    console.log(newProps)
+  }
+
   render(){
-    return (
-      <div className='cards-list'>
-        {this.state.cards.map(card => (
-          <Card
-            card={card}
-            key={card.name}
-          />
-        ))}
-      </div>)
+    const { cards, error } = this.props
+
+    console.log(this.props)
+
+    var displayed_cards = [];
+
+    if(error){
+      return (
+        <p>Some error happend, sorry.</p>
+      )
+    }
+
+    if(cards.length > 0){
+      displayed_cards = cards.slice(0,9)
+      return (
+        <div className='cards-list'>
+          {displayed_cards.map(card => (
+            <Card
+              card={card}
+              key={card.name}
+            />
+          ))}
+        </div>)
+    }else{
+      return (
+        <p>Loading...</p>
+      )
+    }  
   }
+
 }
 CardsList.propTypes = {
+  loadCards: PropTypes.func.isRequired
 }
 
 export default CardsList;

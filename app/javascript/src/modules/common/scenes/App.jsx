@@ -7,7 +7,7 @@ import * as commonActions from '../../common/actions/commonActions'
 import '../../../resources/assets/scss/main.scss'
 
 import SearchBar from '../../../components/SearchBar/SearchBar.jsx'
-import CardsList from '../../../components/CardsList/CardsList.jsx'
+import CardsListContainer from '../../../components/CardsList/CardsListContainer.jsx'
 
 class App extends Component {
   constructor(props) {
@@ -19,7 +19,7 @@ class App extends Component {
     return (
       <div className="app">
         <SearchBar/>
-        <CardsList/>
+        <CardsListContainer/>
         {this.props.children}
       </div>
     )
