@@ -3,7 +3,8 @@
   background-color: #FAFAFA;
   border-radius: 2px;
   margin-top: 20px;
-
+  
+  
   .avatar{
     display: inline-block;
 
@@ -14,5 +15,9 @@
   }
   .info{
     display: inline-block;
+
+    em {
+      background-color: yellow;
+    }
   }
 }

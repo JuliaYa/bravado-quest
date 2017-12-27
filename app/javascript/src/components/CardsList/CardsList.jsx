@@ -49,6 +49,7 @@ class CardsList extends Component {
         {cards.map(card => (
           <Card
             card={card}
+            filter={this.props}
             key={card.name}
           />
         ))}
