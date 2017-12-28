@@ -22,17 +22,19 @@ class Card extends Component {
   
   render() {
     return (
-      <div className='card'>
-        <div className='avatar'>
-          <img src={this.state.avatar}/>         
-        </div>
-        <div className='info'>
-          <div className='email'>{this.highlight(this.state.email)}</div>
-          <div className='name'>{this.highlight(this.state.name)}</div>
-          <div className='title'>{this.highlight(this.state.title)}</div>
-          <div className='address'>{this.highlight(this.state.address)}</div>
-          <hr/>
-          <button className='action-button'>mark as siutable</button>
+      <div className='card' style={this.props.style} key={this.props.key}>
+        <div className='content'>
+          <div className='avatar'>
+            <img src={this.state.avatar}/>         
+          </div>
+          <div className='info'>
+            <div className='email'>{this.highlight(this.state.email)}</div>
+            <div className='name'>{this.highlight(this.state.name)}</div>
+            <div className='title'>{this.highlight(this.state.title)}</div>
+            <div className='address'>{this.highlight(this.state.address)}</div>
+            <hr/>
+            <button className='action-button'>mark as siutable</button>
+          </div>
         </div>
       </div>
     )

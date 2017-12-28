@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as JsSearch from 'js-search'
-import InfiniteScroll from 'react-infinite-scroll-component'
+import { List, AutoSizer } from 'react-virtualized'
 
 import './CardsList.scss'
 import Card from '../Card/Card.jsx'
@@ -19,8 +19,18 @@ class CardsList extends Component {
   constructor(props){
     super(props);
     
-    this.state = {search: null, cards_loaded: false, filtered_cards: [], displayed_cards: []};
-    this.showMore = this.showMore.bind(this);
+    this.state = {
+      //data
+      search: null,
+      cards_loaded: false,
+      filtered_cards: [],
+      //virtual list
+      listHeight: 500,
+      listRowHeight: 145,
+      overscanRowCount: 10
+    };
+
+    this.rowRenderer = this.rowRenderer.bind(this);
   }
 
   initSearch(cards){
@@ -30,33 +40,16 @@ class CardsList extends Component {
     this.setState({search: search});
   }
 
-  getCards(cards){
-    return cards.map((card, idx) => (
+  rowRenderer({index, isScrolling, key, style}){
+    const card = this.state.filtered_cards[index];
+    return (
       <Card
         card={card}
         filter={this.props.filter}
-        key={idx}
+        key={key}
+        style={style}
       />
-    ));
-  }
-
-  showMore(){
-    if(!this.state.cards_loaded) return [];
-    const last_item = this.state.displayed_cards.length === 0 ? 0 : this.state.displayed_cards.length - 1;
-    let new_cards = this.getCards(this.state.filtered_cards.slice(0, last_item+10));
-    let upd = new_cards;
-    setTimeout(() => {
-      this.setState({displayed_cards: upd});
-    }, 500);
-  }
-
-  refresh(component){
-    return component.state.displayed_cards;
-  }
-
-  hasMore(component){
-    return false
-    return component.state.displayed_cards.length === component.state.filtered_cards.length;
+    );
   }
 
   filterCards(filter){
@@ -73,27 +66,46 @@ class CardsList extends Component {
     console.log(newProps);
     if(!this.state.cards_loaded && newProps.cards.length > 0){
       this.initSearch(newProps.cards);
-      this.setState({cards_loaded: true, filtered_cards: newProps.cards, displayed_cards: this.getCards(this.state.filtered_cards.slice(0, 10))});
+      this.setState({cards_loaded: true, filtered_cards: newProps.cards});
     }
     this.filterCards(newProps.filter);
   }
 
   render(){
-    const { cards, error } = this.props;
-
+    const { error} = this.props;
     if(error){
       return (
         <p>Some error happend, sorry.</p>
       )
     }
-    return <InfiniteScroll
-            next={this.showMore()}
-            height='700'
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-            endMessage={<p></p>}>
-            {this.state.displayed_cards}
-          </InfiniteScroll>
+
+    if(!this.state.cards_loaded){
+      return <div>Loading...</div>
+    }
+
+    const {
+      listHeight,
+      listRowHeight,
+      overscanRowCount
+    } = this.state;
+
+    const rowCount = this.state.filtered_cards.length;
+
+    return <AutoSizer disableHeight>
+          {({width}) => (
+            <List
+              ref="List"
+              className="cards-list"
+              height={listHeight}
+              overscanRowCount={overscanRowCount}
+              noRowsRenderer={() => {return <div></div>}}
+              rowCount={rowCount}
+              rowHeight={listRowHeight}
+              rowRenderer={this.rowRenderer}
+              width={width}
+            />
+          )}
+        </AutoSizer>
   }
 
 }
