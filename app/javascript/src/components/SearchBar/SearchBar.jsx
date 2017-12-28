@@ -19,7 +19,7 @@ class SearchBar extends Component {
     return (<div className='search-bar'>
       <label className='magnifier'>
         <img src={magnifier_img}/>
-        <input type='text' onChange={this.onFilterChange.bind(this)} placeholder='Type something here...' />
+        <input autoFocus={true} type='text' onChange={this.onFilterChange.bind(this)} placeholder='Type something here...' />
       </label>
     </div>);
   }
