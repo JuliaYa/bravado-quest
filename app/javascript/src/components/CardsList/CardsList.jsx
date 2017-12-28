@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as JsSearch from 'js-search'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 import './CardsList.scss'
 import Card from '../Card/Card.jsx'
@@ -18,7 +19,8 @@ class CardsList extends Component {
   constructor(props){
     super(props);
     
-    this.state = {search: null, cards_loaded: false, displayed_cards: []};
+    this.state = {search: null, cards_loaded: false, filtered_cards: [], displayed_cards: []};
+    this.showMore = this.showMore.bind(this);
   }
 
   initSearch(cards){
@@ -28,32 +30,39 @@ class CardsList extends Component {
     this.setState({search: search});
   }
 
+  getCards(cards){
+    return cards.map((card, idx) => (
+      <Card
+        card={card}
+        filter={this.props.filter}
+        key={idx}
+      />
+    ));
+  }
+
+  showMore(){
+    if(!this.state.cards_loaded) return [];
+    const last_item = this.state.displayed_cards.length === 0 ? 0 : this.state.displayed_cards.length - 1;
+    let new_cards = this.getCards(this.state.filtered_cards.slice(0, last_item+10));
+    let upd = new_cards;
+    setTimeout(() => {
+      this.setState({displayed_cards: upd});
+    }, 500);
+  }
+
+  refresh(component){
+    return component.state.displayed_cards;
+  }
+
+  hasMore(component){
+    return false
+    return component.state.displayed_cards.length === component.state.filtered_cards.length;
+  }
+
   filterCards(filter){
     if(!this.state.search) return;
     let filtered_cards = this.state.search.search(filter);
-    console.log(filtered_cards);
-    const displayed_cards = filtered_cards.slice(0,19);
-    this.setState({displayed_cards: displayed_cards});
-  }
-
-  displayCards(){
-    const cards = this.state.displayed_cards;
-    console.log(this.state.displayed_cards);
-    if(cards.length == 0){
-      return (
-        <p>Loading...</p>
-      )
-    }
-    return (
-      <div className='cards-list'>
-        {cards.map(card => (
-          <Card
-            card={card}
-            filter={this.props.filter}
-            key={card.name}
-          />
-        ))}
-      </div>)
+    this.setState({filtered_cards: filtered_cards});
   }
 
   componentDidMount(){
@@ -64,8 +73,7 @@ class CardsList extends Component {
     console.log(newProps);
     if(!this.state.cards_loaded && newProps.cards.length > 0){
       this.initSearch(newProps.cards);
-      const displayed_cards = newProps.cards.slice(0,19);
-      this.setState({cards_loaded: true, displayed_cards: displayed_cards});
+      this.setState({cards_loaded: true, filtered_cards: newProps.cards, displayed_cards: this.getCards(this.state.filtered_cards.slice(0, 10))});
     }
     this.filterCards(newProps.filter);
   }
@@ -78,8 +86,14 @@ class CardsList extends Component {
         <p>Some error happend, sorry.</p>
       )
     }
-    
-    return this.displayCards(); 
+    return <InfiniteScroll
+            next={this.showMore()}
+            height='700'
+            hasMore={true}
+            loader={<h4>Loading...</h4>}
+            endMessage={<p></p>}>
+            {this.state.displayed_cards}
+          </InfiniteScroll>
   }
 
 }
