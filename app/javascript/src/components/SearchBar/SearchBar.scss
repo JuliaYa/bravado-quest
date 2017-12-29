@@ -1,11 +1,18 @@
 /* SearchBar Component */
 .search-bar{
-  border: 1px #ccc solid;
+  border: 1px rgba(0, 0, 0, 0.12) solid;
+  border-radius: 2px;
+  background-color: #FAFAFA;
   padding: 8px;
+  height: 32px;
+  -webkit-box-shadow:0px 1px 1px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow:0px 1px 1px rgba(0, 0, 0, 0.24);
+  box-shadow:0px 1px 1px rgba(0, 0, 0, 0.24);
+
 
   .magnifier{
-    line-height: 20px;
-
+    margin-left: 10px;
+    
     img {
       display: inline-block;
       margin-right: 8px;
@@ -13,11 +20,13 @@
       height: 20px;
     }
     input{
+      color: rgba(0, 0, 0, 0.75);
+      background-color: #FAFAFA;
       display: inline-block;     
       border: none;
-      height: 20px;
+      height: 30px;
       width: 90%;
-      font-size: 18px;
+      font-size: 24px;
     }
   }
 

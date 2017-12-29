@@ -80,7 +80,7 @@ class CardsList extends Component {
     }
 
     if(!this.state.cards_loaded){
-      return <div>Loading...</div>
+      return <div className='loader'>Loading...</div>
     }
 
     const {
