@@ -10,9 +10,7 @@ class SearchBar extends Component {
   
   onFilterChange (event){
     const val = event.target.value;
-    if(val.length > 1){
-      this.props.setFilter(val);
-    }
+    this.props.setFilter(val);
   };
 
   render(){

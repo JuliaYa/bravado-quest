@@ -54,7 +54,12 @@ class CardsList extends Component {
 
   filterCards(filter){
     if(!this.state.search) return;
-    let filtered_cards = this.state.search.search(filter);
+    let filtered_cards;
+    if(filter === "") {
+      filtered_cards = this.props.cards;
+    }else{
+      filtered_cards = this.state.search.search(filter);
+    }
     this.setState({filtered_cards: filtered_cards});
   }
 
