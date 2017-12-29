@@ -27,13 +27,16 @@ class Card extends Component {
           <div className='avatar'>
             <img src={this.state.avatar}/>         
           </div>
-          <div className='info'>
-            <div className='email'>{this.highlight(this.state.email)}</div>
-            <div className='name'>{this.highlight(this.state.name)}</div>
-            <div className='title'>{this.highlight(this.state.title)}</div>
-            <div className='address'>{this.highlight(this.state.address)}</div>
-            <hr/>
-            <button className='action-button'>mark as siutable</button>
+          <div className='info-container'>
+            <div className='info'>
+              <div className='email'>{this.highlight(this.state.email)}</div>
+              <div className='name'>{this.highlight(this.state.name)}</div>
+              <div className='title'>{this.highlight(this.state.title)}</div>
+              <div className='address'>{this.highlight(this.state.address)}</div>
+            </div>        
+            <div className='button-container'>
+              <span className='action-button'>mark as siutable</span>
+            </div>
           </div>
         </div>
       </div>
