@@ -22,7 +22,7 @@ class Card extends Component {
   
   render() {
     return (
-      <div className='card' style={this.props.style} key={this.props.key}>
+      <div className='card' style={this.props.style}>
         <div className='content'>
           <div className='avatar'>
             <img src={this.state.avatar}/>         

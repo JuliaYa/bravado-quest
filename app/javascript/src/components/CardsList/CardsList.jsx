@@ -27,7 +27,8 @@ class CardsList extends Component {
       //virtual list
       listHeight: 500,
       listRowHeight: 145,
-      overscanRowCount: 10
+      overscanRowCount: 10,
+      scrollToIndex: undefined
     };
 
     this.rowRenderer = this.rowRenderer.bind(this);
@@ -60,7 +61,7 @@ class CardsList extends Component {
     }else{
       filtered_cards = this.state.search.search(filter);
     }
-    this.setState({filtered_cards: filtered_cards});
+    this.setState({filtered_cards: filtered_cards, scrollToIndex: 0});
   }
 
   componentDidMount(){
@@ -68,7 +69,6 @@ class CardsList extends Component {
   }
 
   componentWillReceiveProps(newProps){
-    console.log(newProps);
     if(!this.state.cards_loaded && newProps.cards.length > 0){
       this.initSearch(newProps.cards);
       this.setState({cards_loaded: true, filtered_cards: newProps.cards});
@@ -88,13 +88,18 @@ class CardsList extends Component {
       return <div className='loader'>Loading...</div>
     }
 
+    const rowCount = this.state.filtered_cards.length;
+
+    if(rowCount === 0){
+      return <div className='no-cards'>Sorry, no cards by your request.</div>
+    }
+
     const {
       listHeight,
       listRowHeight,
-      overscanRowCount
+      overscanRowCount,
+      scrollToIndex
     } = this.state;
-
-    const rowCount = this.state.filtered_cards.length;
 
     return <AutoSizer disableHeight>
           {({width}) => (
@@ -107,6 +112,7 @@ class CardsList extends Component {
               rowCount={rowCount}
               rowHeight={listRowHeight}
               rowRenderer={this.rowRenderer}
+              scrollToIndex={scrollToIndex}
               width={width}
             />
           )}
