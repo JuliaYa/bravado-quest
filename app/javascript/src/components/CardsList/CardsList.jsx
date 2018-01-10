@@ -24,6 +24,7 @@ class CardsList extends Component {
       search: null,
       cards_loaded: false,
       filtered_cards: [],
+      cards: [],
       //virtual list
       listHeight: 500,
       listRowHeight: 145,
@@ -61,22 +62,27 @@ class CardsList extends Component {
     }else{
       filtered_cards = this.state.search.search(filter);
     }
+    console.log('props up');
     this.setState({filtered_cards: filtered_cards, scrollToIndex: 0});
   }
 
   componentDidMount(){
+    console.log('mount');
     this.props.loadCards();
   }
 
   componentWillReceiveProps(newProps){
+    if(!this.state.cards_loaded && newProps.cards.length == 0) return;
     if(!this.state.cards_loaded && newProps.cards.length > 0){
       this.initSearch(newProps.cards);
-      this.setState({cards_loaded: true, filtered_cards: newProps.cards});
+      this.setState({cards_loaded: true, cards: newProps.cards, filtered_cards: newProps.cards});
+    }else{
+      this.filterCards(newProps.filter);
     }
-    this.filterCards(newProps.filter);
   }
 
   render(){
+    console.log('render');
     const { error} = this.props;
     if(error){
       return (
@@ -88,17 +94,12 @@ class CardsList extends Component {
       return <div className='loader'>Loading...</div>
     }
 
-    const rowCount = this.state.filtered_cards.length;
-
-    if(rowCount === 0){
-      return <div className='no-cards'>Sorry, no cards by your request.</div>
-    }
-
     const {
       listHeight,
       listRowHeight,
       overscanRowCount,
-      scrollToIndex
+      scrollToIndex,
+      filtered_cards
     } = this.state;
 
     return <AutoSizer disableHeight>
@@ -108,8 +109,8 @@ class CardsList extends Component {
               className="cards-list"
               height={listHeight}
               overscanRowCount={overscanRowCount}
-              noRowsRenderer={() => {return <div></div>}}
-              rowCount={rowCount}
+              noRowsRenderer={() => {return <div className='no-cards'>Sorry, no cards by your request.</div>}}
+              rowCount={filtered_cards.length}
               rowHeight={listRowHeight}
               rowRenderer={this.rowRenderer}
               scrollToIndex={scrollToIndex}
