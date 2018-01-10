@@ -8,5 +8,3 @@
 // layout file, like app/views/layouts/application.html.erb
 import styles from '../src/application.sass'
 import '../src/index.js'
-
-console.log('Hello World from Webpacker!!!')
