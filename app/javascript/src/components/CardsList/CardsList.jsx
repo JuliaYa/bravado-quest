@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as JsSearch from 'js-search'
 import { List, AutoSizer } from 'react-virtualized'
+import reactStringReplace from 'react-string-replace'
 
 import './CardsList.scss'
 import Card from '../Card/Card.jsx'
@@ -28,7 +29,7 @@ class CardsList extends Component {
       //virtual list
       listHeight: 500,
       listRowHeight: 145,
-      overscanRowCount: 10,
+      overscanRowCount: 5,
       scrollToIndex: undefined
     };
 
@@ -42,16 +43,36 @@ class CardsList extends Component {
     this.setState({search: search});
   }
 
+  highlight(text){
+    if(this.props.filter.length == 0) return text;
+    var parts = reactStringReplace(text, this.props.filter, (match, i) => (
+      <em key={i}>{match}</em>
+    ));
+    return <div>{parts}</div>
+  }
+
   rowRenderer({index, isScrolling, key, style}){
     const card = this.state.filtered_cards[index];
     return (
-      <Card
-        card={card}
-        filter={this.props.filter}
-        key={key}
-        style={style}
-      />
-    );
+      <div key={key} className='card' style={style}>
+        <div className='content'>
+          <div className='avatar'>
+            <img src={card.avatar}/>         
+          </div>
+          <div className='info-container'>
+            <div className='info'>
+              <div className='email'>{this.highlight(card.email)}</div>
+              <div className='name'>{this.highlight(card.name)}</div>
+              <div className='title'>{this.highlight(card.title)}</div>
+              <div className='address'>{this.highlight(card.address)}</div>
+            </div>        
+            <div className='button-container'>
+              <span className='action-button'>mark as siutable</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   filterCards(filter){
@@ -62,7 +83,6 @@ class CardsList extends Component {
     }else{
       filtered_cards = this.state.search.search(filter);
     }
-    console.log('props up');
     this.setState({filtered_cards: filtered_cards, scrollToIndex: 0});
   }
 
@@ -103,21 +123,21 @@ class CardsList extends Component {
     } = this.state;
 
     return <AutoSizer disableHeight>
-          {({width}) => (
-            <List
-              ref="List"
-              className="cards-list"
-              height={listHeight}
-              overscanRowCount={overscanRowCount}
-              noRowsRenderer={() => {return <div className='no-cards'>Sorry, no cards by your request.</div>}}
-              rowCount={filtered_cards.length}
-              rowHeight={listRowHeight}
-              rowRenderer={this.rowRenderer}
-              scrollToIndex={scrollToIndex}
-              width={width}
-            />
-          )}
-        </AutoSizer>
+            {({width}) => (
+              <List
+                ref="List"
+                className="cards-list"
+                height={listHeight}
+                overscanRowCount={overscanRowCount}
+                noRowsRenderer={() => {return <div className='no-cards'>Sorry, no cards by your request.</div>}}
+                rowCount={filtered_cards.length}
+                rowHeight={listRowHeight}
+                rowRenderer={this.rowRenderer}
+                scrollToIndex={scrollToIndex}
+                width={width}
+              />
+            )}
+          </AutoSizer>
   }
 
 }
