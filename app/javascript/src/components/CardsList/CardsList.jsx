@@ -53,6 +53,7 @@ class CardsList extends Component {
 
   rowRenderer({index, isScrolling, key, style}){
     const card = this.state.filtered_cards[index];
+    //note:  if moved to another component (Card), state not updating 
     return (
       <div key={key} className='card' style={style}>
         <div className='content'>
@@ -65,7 +66,8 @@ class CardsList extends Component {
               <div className='name'>{this.highlight(card.name)}</div>
               <div className='title'>{this.highlight(card.title)}</div>
               <div className='address'>{this.highlight(card.address)}</div>
-            </div>        
+            </div>
+            {/* todo: make button work */}
             <div className='button-container'>
               <span className='action-button'>mark as siutable</span>
             </div>
@@ -87,7 +89,6 @@ class CardsList extends Component {
   }
 
   componentDidMount(){
-    console.log('mount');
     this.props.loadCards();
   }
 
@@ -102,7 +103,6 @@ class CardsList extends Component {
   }
 
   render(){
-    console.log('render');
     const { error} = this.props;
     if(error){
       return (
