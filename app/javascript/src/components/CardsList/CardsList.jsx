@@ -43,38 +43,11 @@ class CardsList extends Component {
     this.setState({search: search});
   }
 
-  highlight(text){
-    if(this.props.filter.length == 0) return text;
-    var parts = reactStringReplace(text, this.props.filter, (match, i) => (
-      <em key={i}>{match}</em>
-    ));
-    return <div>{parts}</div>
-  }
-
   rowRenderer({index, isScrolling, key, style}){
     const card = this.state.filtered_cards[index];
-    //note:  if moved to another component (Card), state not updating 
-    return (
-      <div key={key} className='card' style={style}>
-        <div className='content'>
-          <div className='avatar'>
-            <img src={card.avatar}/>         
-          </div>
-          <div className='info-container'>
-            <div className='info'>
-              <div className='email'>{this.highlight(card.email)}</div>
-              <div className='name'>{this.highlight(card.name)}</div>
-              <div className='title'>{this.highlight(card.title)}</div>
-              <div className='address'>{this.highlight(card.address)}</div>
-            </div>
-            {/* todo: make button work */}
-            <div className='button-container'>
-              <span className='action-button'>mark as siutable</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+    return(
+      <Card key={key} style={style} card={card} filter={this.props.filter}/>
+    );
   }
 
   filterCards(filter){

@@ -8,12 +8,11 @@ import './Card.scss'
 class Card extends Component {
   constructor(props){
     super(props)
-
-    this.state = this.props.card
   }
 
   highlight(text){
-    if(this.props.filter.length == 0) return text;
+    const filter = this.props.filter;
+    if(!filter || filter.length == 0) return text;
     var parts = reactStringReplace(text, this.props.filter, (match, i) => (
       <em key={i}>{match}</em>
     ));
@@ -21,19 +20,22 @@ class Card extends Component {
   }
   
   render() {
+    const card = this.props.card;
+    
     return (
       <div className='card' style={this.props.style}>
         <div className='content'>
           <div className='avatar'>
-            <img src={this.state.avatar}/>         
+            <img src={card.avatar}/>         
           </div>
           <div className='info-container'>
             <div className='info'>
-              <div className='email'>{this.highlight(this.state.email)}</div>
-              <div className='name'>{this.highlight(this.state.name)}</div>
-              <div className='title'>{this.highlight(this.state.title)}</div>
-              <div className='address'>{this.highlight(this.state.address)}</div>
-            </div>        
+              <div className='email'>{this.highlight(card.email)}</div>
+              <div className='name'>{this.highlight(card.name)}</div>
+              <div className='title'>{this.highlight(card.title)}</div>
+              <div className='address'>{this.highlight(card.address)}</div>
+            </div>
+            {/* todo: make button work */}        
             <div className='button-container'>
               <span className='action-button'>mark as siutable</span>
             </div>
